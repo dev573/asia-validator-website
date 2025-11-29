@@ -216,7 +216,7 @@ export function StatsSection() {
           { icon: Server, value: totalStaked, label: "Total U2U Staked", highlight: true },
           { icon: Clock, value: uptime, label: "Uptime (30D)", highlight: false },
           { icon: UserCheck, value: delegators, label: "Delegators", highlight: false },
-          { icon: Percent, value: "5.47-12.75%", label: "APR", highlight: true },
+          { icon: Percent, value: "18.07%", label: "The Highest APR", highlight: true },
         ])
       } catch (error) {
         console.error("Failed to load validator stats", error)
