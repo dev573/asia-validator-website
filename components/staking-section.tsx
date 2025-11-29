@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
@@ -13,9 +13,70 @@ export function StakingSection() {
   const [timePeriod, setTimePeriod] = useState<"30D" | "90D" | "1Y">("90D")
   const [swapFrom, setSwapFrom] = useState("USDT")
   const [swapAmount, setSwapAmount] = useState("100")
+  const [aprPercent, setAprPercent] = useState<number | null>(null)
+  const [aprLoading, setAprLoading] = useState(false)
 
-  const apr = 12.5
-  const estimatedReward = (Number.parseFloat(amount) || 0) * (apr / 100) * (lockDays[0] / 365)
+  const validatorId = 14
+
+  const numericAmount = Number.parseFloat(amount) || 0
+  const rewardForDays = (days: number, apr: number) => numericAmount * (apr / 100) * (days / 365)
+  const estimatedReward = rewardForDays(lockDays[0], aprPercent ?? 0)
+
+  async function fetchAprPercent(validator: number, amountU2U: number) {
+    if (!validator || amountU2U <= 0) return null
+    const GRAPHQL_URL = "https://staking-graphql.uniultra.xyz/graphql"
+    const stakingAmountWei = (BigInt(Math.round(amountU2U * 1e6)) * 10n ** 12n).toString()
+
+    const query = `
+      query stakingApr($validatorId:Int!,$stakingAmount:String!){
+        apr0: calculateApr(validatorId:$validatorId, amount:$stakingAmount, duration:0)
+      }
+    `
+
+    const res = await fetch(GRAPHQL_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      cache: "no-store",
+      body: JSON.stringify({
+        query,
+        variables: {
+          validatorId: validator,
+          stakingAmount: stakingAmountWei,
+        },
+      }),
+    })
+
+    if (!res.ok) throw new Error(`APR request failed: ${res.status}`)
+    const { data, errors } = await res.json()
+    if (errors) throw new Error(JSON.stringify(errors))
+    return typeof data?.apr0 === "number" ? data.apr0 : Number.parseFloat(data?.apr0 ?? "0")
+  }
+
+  const refreshApr = async () => {
+    const amt = Number.parseFloat(amount)
+    if (!Number.isFinite(amt) || amt <= 0) {
+      setAprPercent(null)
+      return
+    }
+    try {
+      setAprLoading(true)
+      const apr = await fetchAprPercent(validatorId, amt)
+      setAprPercent(apr ?? null)
+    } catch (error) {
+      console.error("Failed to load APR", error)
+      setAprPercent(null)
+    } finally {
+      setAprLoading(false)
+    }
+  }
+
+  // Refresh APR when amount changes
+  useEffect(() => {
+    refreshApr()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [amount])
+
+  const displayApr = aprLoading ? "…" : aprPercent !== null ? `${aprPercent.toFixed(2)}%` : "—"
 
   return (
     <section id="staking" className="relative py-16 sm:py-24 lg:py-32 bg-tinted-bg overflow-x-hidden">
@@ -87,7 +148,7 @@ export function StakingSection() {
               <div className="bg-secondary/50 rounded-lg sm:rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-xs sm:text-sm text-muted-foreground">Estimated APR</span>
-                  <span className="text-primary font-medium text-sm sm:text-base">{apr}%</span>
+                  <span className="text-primary font-medium text-sm sm:text-base">{displayApr}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-xs sm:text-sm text-muted-foreground">Est. Reward</span>
@@ -180,14 +241,12 @@ export function StakingSection() {
               <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <div className="text-center p-2 sm:p-3 bg-secondary/50 rounded-lg sm:rounded-xl hover:bg-secondary/70 transition-colors">
                   <div className="text-xl sm:text-2xl font-light text-foreground">
-                    {(
-                      Number.parseFloat(amount) * (timePeriod === "30D" ? 0.01 : timePeriod === "90D" ? 0.03 : 0.125)
-                    ).toFixed(0)}
+                    {rewardForDays(timePeriod === "30D" ? 30 : timePeriod === "90D" ? 90 : 365, aprPercent ?? 0).toFixed(2)}
                   </div>
                   <div className="text-xs text-muted-foreground">U2U Earned</div>
                 </div>
                 <div className="text-center p-2 sm:p-3 bg-secondary/50 rounded-lg sm:rounded-xl hover:bg-secondary/70 transition-colors">
-                  <div className="text-xl sm:text-2xl font-light text-primary">{apr}%</div>
+                  <div className="text-xl sm:text-2xl font-light text-primary">{displayApr}</div>
                   <div className="text-xs text-muted-foreground">APR</div>
                 </div>
               </div>
