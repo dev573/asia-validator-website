@@ -135,6 +135,7 @@ export function StatsSection() {
             accept: "*/*",
             "content-type": "application/json",
           },
+          cache: "no-store",
           body: JSON.stringify({
             operationName: "StakingStats",
             variables: {},
@@ -172,7 +173,11 @@ export function StatsSection() {
 
     fetchStakingStats()
 
-    const controllerValidators = new AbortController()
+    return () => controller.abort()
+  }, [])
+
+  useEffect(() => {
+    const controller = new AbortController()
 
     const fetchValidatorStats = async () => {
       try {
@@ -182,6 +187,7 @@ export function StatsSection() {
             accept: "*/*",
             "content-type": "application/json",
           },
+          cache: "no-store",
           body: JSON.stringify({
             query: `
               query Validators {
@@ -194,7 +200,7 @@ export function StatsSection() {
             `,
             variables: {},
           }),
-          signal: controllerValidators.signal,
+          signal: controller.signal,
         })
 
         if (!response.ok) throw new Error(`Request failed: ${response.status}`)
@@ -219,10 +225,7 @@ export function StatsSection() {
 
     fetchValidatorStats()
 
-    return () => {
-      controller.abort()
-      controllerValidators.abort()
-    }
+    return () => controller.abort()
   }, [])
 
   return (
