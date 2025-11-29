@@ -314,7 +314,7 @@ export function StatsSection() {
         </div>
 
         {/* Validator Stats */}
-        <div>
+        <div id="validator-performance">
           <AnimateOnScroll animation="fade-up">
             <h3 className="text-xs sm:text-sm uppercase tracking-[0.15em] text-muted-foreground mb-4 sm:mb-6">
               Our Validator Performance

@@ -70,10 +70,13 @@ export function ChallengesSection() {
                   </li>
                 ))}
               </ul>
-              <button className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors group">
+              <a
+                href="#validator-performance"
+                className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors group"
+              >
                 See Our Validator Stats
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
+              </a>
             </div>
           </AnimateOnScroll>
         </div>

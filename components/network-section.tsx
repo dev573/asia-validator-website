@@ -139,15 +139,15 @@ export function NetworkSection() {
                 <div className="space-y-2 sm:space-y-3 text-sm">
                   <div className="flex justify-between items-center py-2 border-b border-border/50">
                     <span className="text-muted-foreground">Validator ID</span>
-                    <span className="font-mono text-foreground text-xs sm:text-sm">0x7a2...f4e</span>
+                    <span className="font-mono text-foreground text-xs sm:text-sm">14</span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-border/50">
-                    <span className="text-muted-foreground">Commission</span>
-                    <span className="text-primary font-medium">5%</span>
+                    <span className="text-muted-foreground">The Highest APR</span>
+                    <span className="text-primary font-medium">18.07%</span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-border/50">
                     <span className="text-muted-foreground">Region</span>
-                    <span className="text-foreground">EU-West</span>
+                    <span className="text-foreground">Asia</span>
                   </div>
                   <div className="flex justify-between items-center py-2">
                     <span className="text-muted-foreground">Monitoring</span>
