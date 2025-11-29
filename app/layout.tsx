@@ -8,7 +8,7 @@ const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "GlobalValidator • U2U Validator",
+  title: "U2Delegate • U2U Validator",
   description:
     "Stake with a high-performance U2U validator. Earn rewards while helping secure the DePIN-focused U2U Network.",
   generator: "v0.app",

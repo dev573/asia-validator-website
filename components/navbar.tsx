@@ -29,7 +29,7 @@ export function Navbar() {
               </div>
             </div>
             <span className="font-semibold text-foreground text-sm sm:text-base">
-              GlobalValidator <span className="hidden xs:inline text-muted-foreground font-normal">• U2U Validator</span>
+              U2Delegate <span className="hidden xs:inline text-muted-foreground font-normal">• U2U Validator</span>
             </span>
           </a>
 

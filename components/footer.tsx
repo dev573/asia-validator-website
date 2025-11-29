@@ -41,7 +41,7 @@ export function Footer() {
                   <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary" />
                 </div>
               </div>
-              <span className="font-semibold text-sm sm:text-base">GlobalValidator</span>
+              <span className="font-semibold text-sm sm:text-base">U2Delegate</span>
               <span className="text-background/60 font-normal text-sm sm:text-base">• U2U Validator</span>
             </a>
             <p className="text-background/60 text-xs sm:text-sm max-w-sm leading-relaxed">
