@@ -3,54 +3,37 @@
 import { Button } from "@/components/ui/button"
 import { ArrowDown, ChevronRight } from "lucide-react"
 import { ValidatorOrb } from "./validator-orb"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react"
 
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const sectionRef = useRef<HTMLElement>(null)
+  const orbRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setIsVisible(true)
   }, [])
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!sectionRef.current) return
+  const handleOrbMouseMove = (event: ReactMouseEvent<HTMLDivElement>) => {
+    if (!orbRef.current) return
 
-      const rect = sectionRef.current.getBoundingClientRect()
-      // Calculate mouse position relative to section center (-1 to 1)
-      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2
-      const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2
+    const rect = orbRef.current.getBoundingClientRect()
+    const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2
+    const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2
 
-      setMousePosition({ x, y })
-    }
+    setMousePosition({ x, y })
+  }
 
-    const section = sectionRef.current
-    if (section) {
-      section.addEventListener("mousemove", handleMouseMove)
-    }
-
-    return () => {
-      if (section) {
-        section.removeEventListener("mousemove", handleMouseMove)
-      }
-    }
-  }, [])
+  const handleOrbMouseLeave = () => {
+    setMousePosition({ x: 0, y: 0 })
+  }
 
   return (
     <section
-      ref={sectionRef}
       id="hero"
       className="relative min-h-screen pt-20 lg:pt-0 flex flex-col justify-center overflow-x-hidden"
     >
-      <div
-        className="absolute inset-0 overflow-hidden pointer-events-none"
-        style={{
-          transform: `translate(${mousePosition.x * -10}px, ${mousePosition.y * -10}px)`,
-          transition: "transform 0.3s ease-out",
-        }}
-      >
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-[10%] w-64 h-64 rounded-full bg-primary/5 blur-3xl" />
         <div className="absolute top-40 right-[15%] w-96 h-96 rounded-full bg-accent/5 blur-3xl" />
         <div className="absolute bottom-20 left-[20%] w-80 h-80 rounded-full bg-primary/3 blur-3xl" />
@@ -58,14 +41,8 @@ export function HeroSection() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-12 sm:py-16 lg:py-32">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-20 items-center lg:items-start">
-          {/* Left Content - Added staggered fade-in animations + cursor parallax */}
-          <div
-            className="relative z-10 order-2 lg:order-1"
-            style={{
-              transform: `translate(${mousePosition.x * 5}px, ${mousePosition.y * 5}px)`,
-              transition: "transform 0.4s ease-out",
-            }}
-          >
+          {/* Left Content - Staggered fade-in animations */}
+          <div className="relative z-10 order-2 lg:order-1">
             <p
               className={`text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] text-primary font-medium mb-3 sm:mb-4 transition-all duration-700 ${
                 isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -156,6 +133,9 @@ export function HeroSection() {
 
           {/* Right - Orb Visual - Enhanced with cursor tracking */}
           <div
+            ref={orbRef}
+            onMouseMove={handleOrbMouseMove}
+            onMouseLeave={handleOrbMouseLeave}
             className={`relative order-1 lg:order-2 flex justify-center lg:-mt-8 lg:pt-12 transition-all duration-1000 ${
               isVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
             }`}
