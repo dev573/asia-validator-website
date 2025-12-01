@@ -5,6 +5,7 @@ import { NetworkSection } from "@/components/network-section"
 import { StatsSection } from "@/components/stats-section"
 import { StakingSection } from "@/components/staking-section"
 import { ResourcesSection } from "@/components/resources-section"
+import { FaqSection } from "@/components/faq-section"
 import { Footer } from "@/components/footer"
 import { CentralSpine } from "@/components/central-spine"
 
@@ -19,6 +20,7 @@ export default function Home() {
       <StatsSection />
       <StakingSection />
       <ResourcesSection />
+      <FaqSection />
       <Footer />
     </main>
   )

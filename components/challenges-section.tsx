@@ -34,6 +34,7 @@ export function ChallengesSection() {
                   "Hard to judge validator reliability and track record.",
                   "Poor transparency about uptime & slashing risk.",
                   "Confusing UX for new users entering Web3.",
+                  "Confusing terms like stake, lock, unbonding with no simple explanation.",
                   "Hidden fees and unclear commission structures.",
                 ].map((item, index) => (
                   <li
@@ -62,8 +63,9 @@ export function ChallengesSection() {
                   "Public uptime & performance dashboard.",
                   "Transparent commission and reward history.",
                   "Simple step-by-step staking guide for beginners.",
+                  "Plain-language explanation of stake, lock, unstake, unlock directly on this page.",
                   "Enterprise-grade infrastructure with 24/7 monitoring.",
-                  "Stake for 12 months to unlock +15% additional APR from U2Delegate!",
+                  "Lock simulator so you can plan lock duration and unlock timing before you commit.",
                 ].map((item, index) => (
                   <li key={index} className="flex items-start gap-2 sm:gap-3 text-sm sm:text-base text-foreground">
                     <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />

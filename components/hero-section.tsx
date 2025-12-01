@@ -112,6 +112,7 @@ export function HeroSection() {
                 <ul className="space-y-2 sm:space-y-3 text-sm text-muted-foreground">
                   {[
                     "Non-custodial staking, you stay in control.",
+                    "Clear staking lifecycle: stake -> (optional) lock -> unstake -> 7-day unlock -> free U2U.",
                     "Optimized uptime & monitoring.",
                     "Backed by professional Web3 / infra team.",
                   ].map((item, i) => (

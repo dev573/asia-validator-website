@@ -13,7 +13,7 @@ const guides = [
   {
     icon: Shield,
     title: "Understanding Rewards",
-    description: "Learn how staking rewards work",
+    description: "Learn how staking, locking, and the 7-day unlock period affect your rewards.",
     tag: "Education",
   },
   {
@@ -44,7 +44,7 @@ const news = [
   {
     title: "U2U Staking Tutorial",
     date: "Sep 2025",
-    type: "Video",
+    type: "Video • 2-min walkthrough of stake, lock & unstake",
     hasVideo: true,
   },
 ]

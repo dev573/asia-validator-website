@@ -43,6 +43,9 @@ export function NetworkSection() {
                   </div>
                   <h3 className="text-base sm:text-lg font-medium text-foreground">Users</h3>
                 </div>
+                <p className="text-xs sm:text-sm text-muted-foreground mb-3">
+                  You and other U2U holders who stake and use dApps.
+                </p>
                 <ul className="space-y-2 sm:space-y-3 text-sm text-muted-foreground">
                   <li className="flex items-center gap-2">
                     <div className="w-1 h-1 rounded-full bg-primary shrink-0" />
@@ -89,6 +92,9 @@ export function NetworkSection() {
                   </div>
                   <h3 className="text-base sm:text-lg font-medium text-foreground">U2U Network</h3>
                 </div>
+                <p className="text-xs sm:text-sm text-muted-foreground mb-3">
+                  The core chain that handles transactions and distributes staking rewards.
+                </p>
                 <div className="space-y-2 sm:space-y-3">
                   <div className="bg-secondary/50 rounded-lg px-3 sm:px-4 py-2 text-sm hover:bg-secondary/70 transition-colors">
                     <span className="text-primary font-medium">Helios</span>
@@ -136,6 +142,9 @@ export function NetworkSection() {
                   </div>
                   <h3 className="text-base sm:text-lg font-medium text-foreground">Our Validator</h3>
                 </div>
+                <p className="text-xs sm:text-sm text-muted-foreground mb-3">
+                  The node you delegate to. We run and monitor this 24/7 to keep your rewards stable.
+                </p>
                 <div className="space-y-2 sm:space-y-3 text-sm">
                   <div className="flex justify-between items-center py-2 border-b border-border/50">
                     <span className="text-muted-foreground">Validator ID</span>
@@ -146,8 +155,8 @@ export function NetworkSection() {
                     <span className="text-primary font-medium">18.07%</span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-border/50">
-                    <span className="text-muted-foreground">Bonus Rewards</span>
-                    <span className="text-primary font-medium">15%</span>
+                    <span className="text-muted-foreground">Lock Support</span>
+                    <span className="text-foreground">Optional</span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-border/50">
                     <span className="text-muted-foreground">Region</span>
