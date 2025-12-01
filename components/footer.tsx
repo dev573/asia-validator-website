@@ -10,10 +10,12 @@ const footerLinks = {
     { label: "Terms & Risks", href: "#" },
   ],
   social: [
-    { label: "X / Twitter", href: "#" },
-    { label: "Telegram", href: "#" },
-    { label: "Discord", href: "#" },
-    { label: "GitHub", href: "#" },
+    { label: "X / Twitter", href: "https://x.com/u2u_xyz" },
+    { label: "Telegram (chat)", href: "https://t.me/u2u_xyzchat" },
+    { label: "Telegram (channel)", href: "https://t.me/u2u_xyz" },
+    { label: "Discord", href: "https://discord.com/invite/6bPaDU8pk3" },
+    { label: "GitHub", href: "https://github.com/unicornultrafoundation" },
+    { label: "Medium", href: "https://medium.com/unicorn-ultra/find-u2u-network-here-f0b3b56e4806" },
   ],
 }
 
@@ -58,6 +60,8 @@ export function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
+                    target="_blank"
+                    rel="noreferrer noopener"
                     className="text-xs sm:text-sm text-background/60 hover:text-background transition-colors hover:translate-x-1 inline-block"
                   >
                     {link.label}
@@ -75,6 +79,8 @@ export function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
+                    target="_blank"
+                    rel="noreferrer noopener"
                     className="text-xs sm:text-sm text-background/60 hover:text-background transition-colors hover:translate-x-1 inline-block"
                   >
                     {link.label}
