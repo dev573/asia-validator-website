@@ -5,9 +5,8 @@ import { AnimateOnScroll } from "./animate-on-scroll"
 
 const footerLinks = {
   resources: [
-    { label: "Docs", href: "#" },
-    { label: "Staking FAQ", href: "#" },
-    { label: "Terms & Risks", href: "#" },
+    { label: "Docs", href: "https://docs.u2u.xyz/" },
+    { label: "Staking FAQ", href: "https://docs.u2u.xyz/services/staking/faq" },
   ],
   social: [
     { label: "X / Twitter", href: "https://x.com/u2u_xyz" },
