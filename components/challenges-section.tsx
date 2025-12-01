@@ -63,6 +63,7 @@ export function ChallengesSection() {
                   "Transparent commission and reward history.",
                   "Simple step-by-step staking guide for beginners.",
                   "Enterprise-grade infrastructure with 24/7 monitoring.",
+                  "Stake for 12 months to unlock +15% additional APR from U2Delegate!",
                 ].map((item, index) => (
                   <li key={index} className="flex items-start gap-2 sm:gap-3 text-sm sm:text-base text-foreground">
                     <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />

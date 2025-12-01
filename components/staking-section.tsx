@@ -10,8 +10,7 @@ import { AnimateOnScroll } from "./animate-on-scroll"
 export function StakingSection() {
   const [amount, setAmount] = useState("1000")
   const [lockDays, setLockDays] = useState([90])
-  const [timePeriod, setTimePeriod] = useState<"30D" | "90D" | "1Y">("90D")
-  const [swapFrom, setSwapFrom] = useState("USDT")
+  const [swapFrom] = useState("USDT")
   const [swapAmount, setSwapAmount] = useState("100")
   const [aprPercent, setAprPercent] = useState<number | null>(null)
   const [aprLoading, setAprLoading] = useState(false)
@@ -27,6 +26,21 @@ export function StakingSection() {
   const numericAmount = Number.parseFloat(amount) || 0
   const rewardForDays = (days: number, apr: number) => numericAmount * (apr / 100) * (days / 365)
   const estimatedReward = rewardForDays(lockDays[0], totalApr)
+
+  // Determine current time period based on lock days for UI display
+  const getTimePeriod = (): "30D" | "90D" | "1Y" => {
+    if (lockDays[0] >= 330) return "1Y" // Close to 365
+    if (lockDays[0] >= 60) return "90D" // Close to 90
+    return "30D"
+  }
+
+  const timePeriod = getTimePeriod()
+
+  // Handler to sync time period buttons with slider
+  const handleTimePeriodChange = (period: "30D" | "90D" | "1Y") => {
+    const daysMap = { "30D": 30, "90D": 90, "1Y": 365 }
+    setLockDays([daysMap[period]])
+  }
 
   async function fetchAprPercent(validator: number, amountU2U: number) {
     if (!validator || amountU2U <= 0) return null
@@ -203,19 +217,22 @@ export function StakingSection() {
           {/* Rewards Simulator */}
           <AnimateOnScroll animation="fade-up" delay={200}>
             <div className="glass-card rounded-xl sm:rounded-2xl lg:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-xl shadow-primary/5 card-hover h-full">
-              <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary/10 flex items-center justify-center">
-                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary/10 flex items-center justify-center">
+                    <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-medium text-foreground">Rewards Simulator</h3>
                 </div>
-                <h3 className="text-lg sm:text-xl font-medium text-foreground">Rewards Simulator</h3>
+                <div className="text-xs text-muted-foreground hidden sm:block">Synced with stake duration</div>
               </div>
 
-              {/* Time Period Toggle */}
+              {/* Time Period Toggle - Synced with Lock Duration Slider */}
               <div className="flex gap-2 mb-4 sm:mb-6">
                 {(["30D", "90D", "1Y"] as const).map((period) => (
                   <button
                     key={period}
-                    onClick={() => setTimePeriod(period)}
+                    onClick={() => handleTimePeriodChange(period)}
                     className={`flex-1 py-2 px-3 sm:px-4 rounded-lg text-xs sm:text-sm transition-all duration-300 ${
                       timePeriod === period
                         ? "bg-primary text-primary-foreground scale-105"
@@ -269,29 +286,26 @@ export function StakingSection() {
                 </svg>
               </div>
 
-              {/* Summary */}
+              {/* Summary - Synced with Stake Calculator */}
               <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <div className="text-center p-2 sm:p-3 bg-secondary/50 rounded-lg sm:rounded-xl hover:bg-secondary/70 transition-colors">
                   <div className="text-xl sm:text-2xl font-light text-foreground">
-                    {rewardForDays(
-                      timePeriod === "30D" ? 30 : timePeriod === "90D" ? 90 : 365,
-                      timePeriod === "1Y" ? totalApr : baseApr
-                    ).toFixed(2)}
+                    {estimatedReward.toFixed(2)}
                   </div>
-                  <div className="text-xs text-muted-foreground">U2U Earned</div>
+                  <div className="text-xs text-muted-foreground">U2U Earned ({lockDays[0]}d)</div>
                 </div>
                 <div
                   className={`text-center p-2 sm:p-3 rounded-lg sm:rounded-xl hover:bg-primary/20 transition-colors ${
-                    timePeriod === "1Y"
+                    is12MonthStaking
                       ? "bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20"
                       : "bg-secondary/50 hover:bg-secondary/70"
                   }`}
                 >
-                  <div className={`text-xl sm:text-2xl ${timePeriod === "1Y" ? "font-bold text-primary" : "font-light text-foreground"}`}>
-                    {timePeriod === "1Y" ? displayTotalApr : displayBaseApr}
+                  <div className={`text-xl sm:text-2xl ${is12MonthStaking ? "font-bold text-primary" : "font-light text-foreground"}`}>
+                    {displayTotalApr}
                   </div>
-                  <div className="text-xs text-muted-foreground">{timePeriod === "1Y" ? "Total APR" : "APR"}</div>
-                  {timePeriod === "1Y" && <div className="text-xs text-primary font-medium mt-1">+{BONUS_APR}% Bonus</div>}
+                  <div className="text-xs text-muted-foreground">{is12MonthStaking ? "Total APR" : "APR"}</div>
+                  {is12MonthStaking && <div className="text-xs text-primary font-medium mt-1">+{BONUS_APR}% Bonus</div>}
                 </div>
               </div>
             </div>

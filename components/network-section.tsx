@@ -146,6 +146,10 @@ export function NetworkSection() {
                     <span className="text-primary font-medium">18.07%</span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-border/50">
+                    <span className="text-muted-foreground">Bonus Rewards</span>
+                    <span className="text-primary font-medium">15%</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-border/50">
                     <span className="text-muted-foreground">Region</span>
                     <span className="text-foreground">Asia</span>
                   </div>
