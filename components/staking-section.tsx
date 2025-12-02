@@ -17,11 +17,8 @@ export function StakingSection() {
 
   const validatorId = 14
 
-  // U2Delegate Bonus: We add 15% on top of the base APR only for 12-month staking
-  const BONUS_APR = 15
   const baseApr = aprPercent ?? 0
-  const is12MonthStaking = lockDays[0] >= 365
-  const totalApr = baseApr + (is12MonthStaking ? BONUS_APR : 0)
+  const totalApr = baseApr
 
   const numericAmount = Number.parseFloat(amount) || 0
   const rewardForDays = (days: number, apr: number) => numericAmount * (apr / 100) * (days / 365)
@@ -168,24 +165,9 @@ export function StakingSection() {
               {/* Estimated Rewards */}
               <div className="bg-secondary/50 rounded-lg sm:rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs sm:text-sm text-muted-foreground">{is12MonthStaking ? "Total APR" : "APR"}</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">APR</span>
                   <span className="text-primary font-bold text-lg sm:text-xl">{displayTotalApr}</span>
                 </div>
-                {is12MonthStaking && (
-                  <>
-                    <div className="flex justify-between items-center mb-2 text-xs sm:text-sm">
-                      <span className="text-muted-foreground">Base APR</span>
-                      <span className="text-foreground">{displayBaseApr}</span>
-                    </div>
-                    <div className="flex justify-between items-center mb-3 p-2 bg-gradient-to-r from-primary/20 to-accent/20 rounded-lg border border-primary/30">
-                      <span className="text-xs sm:text-sm font-medium text-primary flex items-center gap-1">
-                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-                        U2Delegate Bonus
-                      </span>
-                      <span className="text-primary font-bold text-sm sm:text-base">+{BONUS_APR}%</span>
-                    </div>
-                  </>
-                )}
                 <div className="flex justify-between items-center">
                   <span className="text-xs sm:text-sm text-muted-foreground">Est. Reward</span>
                   <span className="text-foreground font-medium text-sm sm:text-base">
@@ -201,16 +183,7 @@ export function StakingSection() {
               {/* <p className="text-xs text-muted-foreground text-center mt-3 sm:mt-4">
                 Estimate only. Actual rewards depend on network conditions.
               </p> */}
-              {!is12MonthStaking && (
-                <p className="text-xs text-primary font-medium text-center mt-2 bg-primary/10 p-2 rounded-lg border border-primary/20">
-                  Stake for 12 months to unlock +{BONUS_APR}% additional APR from U2Delegate!
-                </p>
-              )}
-              {is12MonthStaking && (
-                <p className="text-xs text-primary font-medium text-center mt-2 bg-gradient-to-r from-primary/10 to-accent/10 p-2 rounded-lg border border-primary/30">
-                  You're earning +{BONUS_APR}% bonus APR with your 12-month commitment!
-                </p>
-              )}
+
             </div>
           </AnimateOnScroll>
 
@@ -295,17 +268,12 @@ export function StakingSection() {
                   <div className="text-xs text-muted-foreground">U2U Earned ({lockDays[0]}d)</div>
                 </div>
                 <div
-                  className={`text-center p-2 sm:p-3 rounded-lg sm:rounded-xl hover:bg-primary/20 transition-colors ${
-                    is12MonthStaking
-                      ? "bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20"
-                      : "bg-secondary/50 hover:bg-secondary/70"
-                  }`}
+                  className="text-center p-2 sm:p-3 rounded-lg sm:rounded-xl hover:bg-primary/20 transition-colors bg-secondary/50 hover:bg-secondary/70"
                 >
-                  <div className={`text-xl sm:text-2xl ${is12MonthStaking ? "font-bold text-primary" : "font-light text-foreground"}`}>
+                  <div className="text-xl sm:text-2xl font-light text-foreground">
                     {displayTotalApr}
                   </div>
-                  <div className="text-xs text-muted-foreground">{is12MonthStaking ? "Total APR" : "APR"}</div>
-                  {is12MonthStaking && <div className="text-xs text-primary font-medium mt-1">+{BONUS_APR}% Bonus</div>}
+                  <div className="text-xs text-muted-foreground">APR</div>
                 </div>
               </div>
             </div>
