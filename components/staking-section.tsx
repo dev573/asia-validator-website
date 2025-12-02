@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
-import { Wallet, ArrowRightLeft, TrendingUp, ChevronDown } from "lucide-react"
+import { Wallet, ArrowRightLeft, TrendingUp, ChevronDown, Lock } from "lucide-react"
 import { AnimateOnScroll } from "./animate-on-scroll"
 
 export function StakingSection() {
@@ -15,38 +15,37 @@ export function StakingSection() {
   const [aprPercent, setAprPercent] = useState<number | null>(null)
   const [aprLoading, setAprLoading] = useState(false)
 
+  // Lock Section State
+  const [lockAmount, setLockAmount] = useState("1000")
+  const [lockDuration, setLockDuration] = useState([365])
+  const [lockAprPercent, setLockAprPercent] = useState<number | null>(null)
+  const [lockAprLoading, setLockAprLoading] = useState(false)
+
   const validatorId = 14
 
   const baseApr = aprPercent ?? 0
   const totalApr = baseApr
 
   const numericAmount = Number.parseFloat(amount) || 0
-  const rewardForDays = (days: number, apr: number) => numericAmount * (apr / 100) * (days / 365)
-  const estimatedReward = rewardForDays(lockDays[0], totalApr)
+  const rewardForDays = (days: number, apr: number, amount: number) => amount * (apr / 100) * (days / 365)
+  const estimatedReward = rewardForDays(lockDays[0], totalApr, numericAmount)
 
-  // Determine current time period based on lock days for UI display
-  const getTimePeriod = (): "30D" | "90D" | "1Y" => {
-    if (lockDays[0] >= 330) return "1Y" // Close to 365
-    if (lockDays[0] >= 60) return "90D" // Close to 90
-    return "30D"
-  }
+  // Lock Section Logic
+  const baseLockApr = lockAprPercent ?? 0
+  const totalLockApr = baseLockApr
+  const numericLockAmount = Number.parseFloat(lockAmount) || 0
+  const estimatedLockReward = rewardForDays(lockDuration[0], totalLockApr, numericLockAmount)
 
-  const timePeriod = getTimePeriod()
 
-  // Handler to sync time period buttons with slider
-  const handleTimePeriodChange = (period: "30D" | "90D" | "1Y") => {
-    const daysMap = { "30D": 30, "90D": 90, "1Y": 365 }
-    setLockDays([daysMap[period]])
-  }
 
-  async function fetchAprPercent(validator: number, amountU2U: number) {
+  async function fetchAprPercent(validator: number, amountU2U: number, duration: number) {
     if (!validator || amountU2U <= 0) return null
     const GRAPHQL_URL = "https://staking-graphql.uniultra.xyz/graphql"
     const stakingAmountWei = (BigInt(Math.round(amountU2U * 1e6)) * 10n ** 12n).toString()
 
     const query = `
-      query stakingApr($validatorId:Int!,$stakingAmount:String!){
-        apr0: calculateApr(validatorId:$validatorId, amount:$stakingAmount, duration:0)
+      query stakingApr($validatorId:Int!,$stakingAmount:String!,$duration:Int!){
+        apr0: calculateApr(validatorId:$validatorId, amount:$stakingAmount, duration:$duration)
       }
     `
 
@@ -59,6 +58,7 @@ export function StakingSection() {
         variables: {
           validatorId: validator,
           stakingAmount: stakingAmountWei,
+          duration: duration,
         },
       }),
     })
@@ -77,7 +77,7 @@ export function StakingSection() {
     }
     try {
       setAprLoading(true)
-      const apr = await fetchAprPercent(validatorId, amt)
+      const apr = await fetchAprPercent(validatorId, amt, 0)
       setAprPercent(apr ?? null)
     } catch (error) {
       console.error("Failed to load APR", error)
@@ -93,8 +93,35 @@ export function StakingSection() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amount])
 
+  const refreshLockApr = async () => {
+    const amt = Number.parseFloat(lockAmount)
+    if (!Number.isFinite(amt) || amt <= 0) {
+      setLockAprPercent(null)
+      return
+    }
+    try {
+      setLockAprLoading(true)
+      // duration in seconds for the API
+      const durationSeconds = lockDuration[0] * 24 * 60 * 60
+      const apr = await fetchAprPercent(validatorId, amt, durationSeconds)
+      setLockAprPercent(apr ?? null)
+    } catch (error) {
+      console.error("Failed to load Lock APR", error)
+      setLockAprPercent(null)
+    } finally {
+      setLockAprLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    refreshLockApr()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lockAmount, lockDuration])
+
   const displayTotalApr = aprLoading ? "…" : aprPercent !== null ? `${totalApr.toFixed(2)}%` : "—"
   const displayBaseApr = aprLoading ? "…" : aprPercent !== null ? `${baseApr.toFixed(2)}%` : "—"
+
+  const displayTotalLockApr = lockAprLoading ? "…" : lockAprPercent !== null ? `${totalLockApr.toFixed(2)}%` : "—"
 
   return (
     <section id="staking" className="relative py-16 sm:py-24 lg:py-32 bg-tinted-bg overflow-x-hidden">
@@ -187,94 +214,63 @@ export function StakingSection() {
             </div>
           </AnimateOnScroll>
 
-          {/* Rewards Simulator */}
+          {/* Lock Panel - Replaces Rewards Simulator */}
           <AnimateOnScroll animation="fade-up" delay={200}>
             <div className="glass-card rounded-xl sm:rounded-2xl lg:rounded-3xl p-5 sm:p-6 lg:p-8 shadow-xl shadow-primary/5 card-hover h-full">
-              <div className="flex items-center justify-between mb-4 sm:mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary/10 flex items-center justify-center">
-                    <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-medium text-foreground">Rewards Simulator</h3>
+              <div className="flex items-center gap-3 mb-4 sm:mb-6">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Lock className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                 </div>
-                <div className="text-xs text-muted-foreground hidden sm:block">Synced with stake duration</div>
+                <h3 className="text-lg sm:text-xl font-medium text-foreground">Lock Your U2U</h3>
               </div>
 
-              {/* Time Period Toggle - Synced with Lock Duration Slider */}
-              <div className="flex gap-2 mb-4 sm:mb-6">
-                {(["30D", "90D", "1Y"] as const).map((period) => (
-                  <button
-                    key={period}
-                    onClick={() => handleTimePeriodChange(period)}
-                    className={`flex-1 py-2 px-3 sm:px-4 rounded-lg text-xs sm:text-sm transition-all duration-300 ${timePeriod === period
-                      ? "bg-primary text-primary-foreground scale-105"
-                      : "bg-secondary text-muted-foreground hover:bg-secondary/80 hover:scale-102"
-                      }`}
-                  >
-                    {period}
-                  </button>
-                ))}
-              </div>
-
-              {/* Chart - Added animated path */}
-              <div className="relative h-36 sm:h-48 mb-4">
-                <svg className="w-full h-full" viewBox="0 0 300 150" preserveAspectRatio="xMidYMid meet">
-                  {/* Grid lines */}
-                  {[0, 1, 2, 3, 4].map((i) => (
-                    <line
-                      key={i}
-                      x1="0"
-                      y1={30 * i}
-                      x2="300"
-                      y2={30 * i}
-                      stroke="currentColor"
-                      strokeWidth="0.5"
-                      className="text-border"
-                    />
-                  ))}
-                  {/* Reward curve - animated */}
-                  <path
-                    d="M 0 120 Q 75 100, 150 70 T 300 20"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    className="text-primary"
-                    strokeDasharray="500"
-                    strokeDashoffset="500"
-                    style={{
-                      animation: "draw-line 2s ease-out forwards",
-                    }}
+              {/* Amount Input */}
+              <div className="mb-4 sm:mb-6">
+                <label className="text-xs sm:text-sm text-muted-foreground mb-2 block">Amount to Lock</label>
+                <div className="relative">
+                  <Input
+                    type="number"
+                    value={lockAmount}
+                    onChange={(e) => setLockAmount(e.target.value)}
+                    className="h-10 sm:h-12 rounded-lg sm:rounded-xl pr-14 sm:pr-16 text-base sm:text-lg transition-all focus:ring-2 focus:ring-primary/20"
+                    placeholder="0.00"
                   />
-                  {/* Fill area */}
-                  <path
-                    d="M 0 120 Q 75 100, 150 70 T 300 20 L 300 150 L 0 150 Z"
-                    fill="currentColor"
-                    className="text-primary/10"
-                    style={{
-                      animation: "fade-in 1s ease-out 1s forwards",
-                      opacity: 0,
-                    }}
-                  />
-                </svg>
+                  <span className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-xs sm:text-sm text-muted-foreground">
+                    U2U
+                  </span>
+                </div>
               </div>
 
-              {/* Summary - Synced with Stake Calculator */}
-              <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                <div className="text-center p-2 sm:p-3 bg-secondary/50 rounded-lg sm:rounded-xl hover:bg-secondary/70 transition-colors">
-                  <div className="text-xl sm:text-2xl font-light text-foreground">
-                    {estimatedReward.toFixed(2)}
-                  </div>
-                  <div className="text-xs text-muted-foreground">U2U Earned ({lockDays[0]}d)</div>
+              {/* Lock Duration */}
+              <div className="mb-4 sm:mb-6">
+                <div className="flex justify-between text-xs sm:text-sm mb-2 sm:mb-3">
+                  <span className="text-muted-foreground">Lock Duration</span>
+                  <span className="text-foreground font-medium">{lockDuration[0]} days</span>
                 </div>
-                <div
-                  className="text-center p-2 sm:p-3 rounded-lg sm:rounded-xl hover:bg-primary/20 transition-colors bg-secondary/50 hover:bg-secondary/70"
-                >
-                  <div className="text-xl sm:text-2xl font-light text-foreground">
-                    {displayTotalApr}
-                  </div>
-                  <div className="text-xs text-muted-foreground">APR</div>
+                <Slider value={lockDuration} onValueChange={setLockDuration} min={14} max={365} step={1} className="w-full" />
+                <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                  <span>14d</span>
+                  <span>365d</span>
                 </div>
               </div>
+
+              {/* Estimated Rewards */}
+              <div className="bg-secondary/50 rounded-lg sm:rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-xs sm:text-sm text-muted-foreground">APR</span>
+                  <span className="text-primary font-bold text-lg sm:text-xl">{displayTotalLockApr}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs sm:text-sm text-muted-foreground">Est. Reward</span>
+                  <span className="text-foreground font-medium text-sm sm:text-base">
+                    {estimatedLockReward.toFixed(2)} U2U
+                  </span>
+                </div>
+              </div>
+
+              <Button className="w-full h-10 sm:h-12 rounded-lg sm:rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground btn-hover">
+                Lock U2U
+              </Button>
             </div>
           </AnimateOnScroll>
 
