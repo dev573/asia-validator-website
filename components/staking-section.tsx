@@ -122,7 +122,7 @@ export function StakingSection() {
               </div>
 
               {/* Wallet Status */}
-              <div className="mb-4 sm:mb-6">
+              {/* <div className="mb-4 sm:mb-6">
                 <Button
                   variant="outline"
                   className="w-full justify-between rounded-lg sm:rounded-xl h-10 sm:h-12 border-dashed bg-transparent text-sm btn-hover"
@@ -130,7 +130,7 @@ export function StakingSection() {
                   <span className="text-muted-foreground">Connect Wallet</span>
                   <Wallet className="w-4 h-4" />
                 </Button>
-              </div>
+              </div> */}
 
               {/* Amount Input */}
               <div className="mb-4 sm:mb-6">
@@ -177,7 +177,7 @@ export function StakingSection() {
               </div>
 
               <Button className="w-full h-10 sm:h-12 rounded-lg sm:rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground btn-hover">
-                Delegate
+                Staking dApp
               </Button>
 
               {/* <p className="text-xs text-muted-foreground text-center mt-3 sm:mt-4">
@@ -206,11 +206,10 @@ export function StakingSection() {
                   <button
                     key={period}
                     onClick={() => handleTimePeriodChange(period)}
-                    className={`flex-1 py-2 px-3 sm:px-4 rounded-lg text-xs sm:text-sm transition-all duration-300 ${
-                      timePeriod === period
-                        ? "bg-primary text-primary-foreground scale-105"
-                        : "bg-secondary text-muted-foreground hover:bg-secondary/80 hover:scale-102"
-                    }`}
+                    className={`flex-1 py-2 px-3 sm:px-4 rounded-lg text-xs sm:text-sm transition-all duration-300 ${timePeriod === period
+                      ? "bg-primary text-primary-foreground scale-105"
+                      : "bg-secondary text-muted-foreground hover:bg-secondary/80 hover:scale-102"
+                      }`}
                   >
                     {period}
                   </button>
