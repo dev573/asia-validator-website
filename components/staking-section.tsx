@@ -203,8 +203,10 @@ export function StakingSection() {
                 </div>
               </div>
 
-              <Button className="w-full h-10 sm:h-12 rounded-lg sm:rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground btn-hover">
-                Staking dApp
+              <Button asChild className="w-full h-10 sm:h-12 rounded-lg sm:rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground btn-hover">
+                <a href="https://stakingu2delegate.vercel.app" target="_blank" rel="noopener noreferrer">
+                  Staking dApp
+                </a>
               </Button>
 
               {/* <p className="text-xs text-muted-foreground text-center mt-3 sm:mt-4">
@@ -268,8 +270,10 @@ export function StakingSection() {
                 </div>
               </div>
 
-              <Button className="w-full h-10 sm:h-12 rounded-lg sm:rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground btn-hover">
-                Lock U2U
+              <Button asChild className="w-full h-10 sm:h-12 rounded-lg sm:rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground btn-hover">
+                <a href="https://stakingu2delegate.vercel.app" target="_blank" rel="noopener noreferrer">
+                  Lock U2U
+                </a>
               </Button>
             </div>
           </AnimateOnScroll>
@@ -339,10 +343,13 @@ export function StakingSection() {
               </div>
 
               <Button
+                asChild
                 variant="outline"
                 className="w-full h-10 sm:h-12 rounded-lg sm:rounded-xl border-primary text-primary hover:bg-primary/10 bg-transparent text-sm sm:text-base btn-hover"
               >
-                Swap & Stake This Amount
+                <a href="https://stakingu2delegate.vercel.app/swap" target="_blank" rel="noopener noreferrer">
+                  Swap & Stake This Amount
+                </a>
               </Button>
             </div>
           </AnimateOnScroll>
