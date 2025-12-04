@@ -48,8 +48,10 @@ export function Navbar() {
 
           {/* CTA Button */}
           <div className="hidden lg:block">
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-5 xl:px-6">
-              Launch Staking dApp
+            <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-5 xl:px-6">
+              <a href="https://stakingu2delegate.vercel.app" target="_blank" rel="noopener noreferrer">
+                Launch Staking dApp
+              </a>
             </Button>
           </div>
 
@@ -77,8 +79,10 @@ export function Navbar() {
                   {item.label}
                 </a>
               ))}
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full mt-4">
-                Launch Staking dApp
+              <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full mt-4">
+                <a href="https://stakingu2delegate.vercel.app" target="_blank" rel="noopener noreferrer">
+                  Launch Staking dApp
+                </a>
               </Button>
             </div>
           </div>

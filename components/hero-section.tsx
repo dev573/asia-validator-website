@@ -44,25 +44,22 @@ export function HeroSection() {
           {/* Left Content - Staggered fade-in animations */}
           <div className="relative z-10 order-2 lg:order-1">
             <p
-              className={`text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] text-primary font-medium mb-3 sm:mb-4 transition-all duration-700 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+              className={`text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] text-primary font-medium mb-3 sm:mb-4 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
               style={{ transitionDelay: "0.1s" }}
             >
               Leading Validator for the U2U Network
             </p>
             <h1
-              className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-foreground leading-[1.1] mb-4 sm:mb-6 text-balance transition-all duration-700 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+              className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-foreground leading-[1.1] mb-4 sm:mb-6 text-balance transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
               style={{ transitionDelay: "0.2s" }}
             >
               Stake with a High-Performance <span className="text-primary font-normal">U2U Validator</span>
             </h1>
             <p
-              className={`text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-lg leading-relaxed transition-all duration-700 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+              className={`text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-lg leading-relaxed transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
               style={{ transitionDelay: "0.3s" }}
             >
               Earn U2U rewards while helping secure the DePIN-focused U2U Network. Non-custodial, transparent, and
@@ -70,19 +67,21 @@ export function HeroSection() {
             </p>
 
             <div
-              className={`flex flex-col sm:flex-row gap-3 sm:gap-4 mb-10 sm:mb-16 transition-all duration-700 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+              className={`flex flex-col sm:flex-row gap-3 sm:gap-4 mb-10 sm:mb-16 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
               style={{ transitionDelay: "0.4s" }}
             >
               <Button
+                asChild
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 sm:px-8 h-11 sm:h-12 w-full sm:w-auto btn-hover relative overflow-hidden group"
               >
-                <span className="relative z-10 flex items-center">
-                  Stake with Us
-                  <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </span>
+                <a href="https://stakingu2delegate.vercel.app" target="_blank" rel="noopener noreferrer">
+                  <span className="relative z-10 flex items-center">
+                    Stake with Us
+                    <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </a>
               </Button>
               <Button
                 variant="outline"
@@ -95,9 +94,8 @@ export function HeroSection() {
 
             {/* Section Marker - Added fade-in animation */}
             <div
-              className={`flex items-start gap-4 sm:gap-6 transition-all duration-700 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+              className={`flex items-start gap-4 sm:gap-6 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
               style={{ transitionDelay: "0.5s" }}
             >
               <div className="flex flex-col items-center">
@@ -118,9 +116,8 @@ export function HeroSection() {
                   ].map((item, i) => (
                     <li
                       key={i}
-                      className={`flex items-center gap-2 sm:gap-3 transition-all duration-500 ${
-                        isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
-                      }`}
+                      className={`flex items-center gap-2 sm:gap-3 transition-all duration-500 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
+                        }`}
                       style={{ transitionDelay: `${0.6 + i * 0.1}s` }}
                     >
                       <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
@@ -137,9 +134,8 @@ export function HeroSection() {
             ref={orbRef}
             onMouseMove={handleOrbMouseMove}
             onMouseLeave={handleOrbMouseLeave}
-            className={`relative order-1 lg:order-2 flex justify-center lg:-mt-8 lg:pt-12 transition-all duration-1000 ${
-              isVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
-            }`}
+            className={`relative order-1 lg:order-2 flex justify-center lg:-mt-8 lg:pt-12 transition-all duration-1000 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
+              }`}
             style={{ transitionDelay: "0.3s" }}
           >
             <div
@@ -159,9 +155,8 @@ export function HeroSection() {
 
       {/* Scroll Indicator - hidden on very small screens */}
       <div
-        className={`absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 hidden sm:flex transition-all duration-700 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}
+        className={`absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 hidden sm:flex transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
         style={{ transitionDelay: "1s" }}
       >
         <span className="text-xs text-muted-foreground">Scroll</span>
